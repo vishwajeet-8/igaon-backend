@@ -1,0 +1,26 @@
+{
+  "name": "igaon_backend",
+  "version": "1.0.0",
+  "description": "This is an mvp of an instagrma app called igon version 1.0.0",
+  "license": "ISC",
+  "author": "vishwajeet rout",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "argon2": "^0.44.0",
+    "cloudinary": "^2.10.0",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.1.1",
+    "nodemon": "^3.1.14",
+    "pg": "^8.20.0",
+    "streamifier": "^0.1.1",
+    "zod": "^4.4.3"
+  }
+}
