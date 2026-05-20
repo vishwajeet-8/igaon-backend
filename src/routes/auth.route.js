@@ -10,6 +10,56 @@ const jwt = require("jsonwebtoken");
 const { id } = require("zod/locales");
 const isAuthenticate = require("../middlewares/authentication");
 
+/**
+ * @swagger
+ * /api/auth/signup:
+ *   post:
+ *     summary: Register a new user
+ *     description: Creates a user account, sets a JWT token cookie, and returns a success message.
+ *     tags:
+ *       - Auth
+ *     security: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/SignupRequest'
+ *     responses:
+ *       200:
+ *         description: User registered successfully.
+ *         headers:
+ *           Set-Cookie:
+ *             description: JWT token cookie.
+ *             schema:
+ *               type: string
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/MessageResponse'
+ *             example:
+ *               message: Signup Successfull
+ *       400:
+ *         description: Invalid request body.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *       409:
+ *         description: Email or username already exists.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *             example:
+ *               error: Resource already exists
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
 router.post("/auth/signup", async (req, res) => {
   try {
     //validate input
@@ -72,6 +122,55 @@ router.post("/auth/signup", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/auth/login:
+ *   post:
+ *     summary: Login a user
+ *     description: Validates credentials, sets a JWT token cookie, and returns a success message.
+ *     tags:
+ *       - Auth
+ *     security: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/LoginRequest'
+ *     responses:
+ *       200:
+ *         description: User logged in successfully.
+ *         headers:
+ *           Set-Cookie:
+ *             description: JWT token cookie.
+ *             schema:
+ *               type: string
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/MessageResponse'
+ *             example:
+ *               message: Login Successfull
+ *       400:
+ *         description: Invalid request body or credentials.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *       401:
+ *         description: Password is incorrect.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *             example: Unauthorized
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
 router.post("/auth/login", async (req, res) => {
   try {
     //validate req body
@@ -101,7 +200,6 @@ router.post("/auth/login", async (req, res) => {
       [validatedData.sucessMessage.email],
     );
     const user = rows[0];
-
     if (!user) throw { status: 400, message: "Invalid Credentials" };
 
     //comapre password
@@ -129,6 +227,32 @@ router.post("/auth/login", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/auth/logout:
+ *   post:
+ *     summary: Logout the current user
+ *     description: Clears the JWT token cookie for the authenticated user.
+ *     tags:
+ *       - Auth
+ *     security:
+ *       - cookieAuth: []
+ *     responses:
+ *       200:
+ *         description: User logged out successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/MessageResponse'
+ *             example:
+ *               message: Logout Successfull
+ *       401:
+ *         description: Missing, invalid, or expired token.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
 router.post("/auth/logout", isAuthenticate, async (req, res) => {
   res.clearCookie("token");
   return res.status(200).json({ message: "Logout Successfull" });

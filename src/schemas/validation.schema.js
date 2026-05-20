@@ -18,4 +18,22 @@ const validateProfile = z.object({
   birth: z.string(),
 });
 
-module.exports = { ValidateSignup, validateLogin, validateProfile };
+const validatePost = z.object({
+  url: z.string(),
+  title: z.string(),
+  description: z.string(),
+});
+
+const validateUpdatePost = z.object({
+  title: z.string().optional(),
+  description: z.string().optional(),
+  likes: z.number().optional(),
+});
+
+module.exports = {
+  ValidateSignup,
+  validateLogin,
+  validateProfile,
+  validatePost,
+  validateUpdatePost,
+};

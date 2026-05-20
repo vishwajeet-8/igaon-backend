@@ -9,8 +9,18 @@ CREATE TABLE users (
 );
 
 CREATE TABLE profiles (
-    user_id UUID PRIMARY KEY REFERENCES  users(id) ON DELETE CASCADE ,
+    user_id UUID PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
     bio TEXT,
     avatar_url TEXT,
-    birth DATE,
-)
+    birth DATE
+);
+
+CREATE TABLE POSTS (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    post_url TEXT NOT NULL,
+    post_title TEXT NOT NULL,
+    post_description TEXT,
+    likes INTEGER DEFAULT 0,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
