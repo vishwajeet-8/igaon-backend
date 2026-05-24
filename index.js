@@ -2,6 +2,7 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./src/docs/swagger");
+const cors = require("cors");
 
 const authRoute = require("./src/routes/auth.route");
 const profileRoute = require("./src/routes/profile.route");
@@ -11,6 +12,7 @@ const app = express();
 
 const PORT = 8000;
 
+app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));

@@ -222,8 +222,8 @@ router.post("/auth/login", async (req, res) => {
   } catch (err) {
     console.log(err);
     return res
-      .status(err.staus || 500)
-      .json(err.message || "Internal Server Error");
+      .status(err.status || 500)
+      .json({ message: err.message || "Internal Server Error" });
   }
 });
 
